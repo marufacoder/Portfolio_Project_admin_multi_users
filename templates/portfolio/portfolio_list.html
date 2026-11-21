@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}All portfolios &middot; Portfolio Manager{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <h1 class="h3 mb-0">All portfolios</h1>
+  <a class="btn btn-primary" href="{% url 'portfolio:portfolio_create' %}">Add user &amp; portfolio</a>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-sm-8 col-md-6">
+    <input type="search" name="q" value="{{ q }}" class="form-control" placeholder="Search by username, email or name">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-outline-secondary">Search</button>
+    {% if q %}<a class="btn btn-link" href="{% url 'portfolio:portfolio_list' %}">Clear</a>{% endif %}
+  </div>
+</form>
+
+<div class="card shadow-sm">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>User</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th class="text-center">CV</th>
+          <th class="text-center">Skills</th>
+          <th class="text-center">Projects</th>
+          <th class="text-center">Exp.</th>
+          <th class="text-center">Edu.</th>
+          <th class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in page_obj %}
+          <tr>
+            <td>
+              {{ profile.user.username }}
+              {% if profile.user.is_superuser %}<span class="badge text-bg-danger">superuser</span>
+              {% elif profile.user.is_staff %}<span class="badge text-bg-warning">staff</span>{% endif %}
+            </td>
+            <td>{{ profile.display_name }}</td>
+            <td>{{ profile.user.email }}</td>
+            <td class="text-center">{% if profile.cv %}Yes{% else %}&ndash;{% endif %}</td>
+            <td class="text-center">{{ profile.skill_count }}</td>
+            <td class="text-center">{{ profile.project_count }}</td>
+            <td class="text-center">{{ profile.experience_count }}</td>
+            <td class="text-center">{{ profile.education_count }}</td>
+            <td class="text-end">
+              <div class="btn-group btn-group-sm">
+                <a class="btn btn-outline-primary" href="{% url 'portfolio:profile_detail' profile.pk %}">View</a>
+                <a class="btn btn-outline-secondary" href="{% url 'portfolio:profile_edit' profile.pk %}">Edit</a>
+                {% if profile.user_id != user.pk %}
+                  <a class="btn btn-outline-danger" href="{% url 'portfolio:profile_delete' profile.pk %}">Delete</a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="9" class="text-center text-muted py-4">No portfolios found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% if page_obj.has_other_pages %}
+  <nav class="mt-3" aria-label="Pagination">
+    <ul class="pagination justify-content-center">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">Previous</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+      <li class="page-item disabled"><span class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">Next</a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+{% endblock %}

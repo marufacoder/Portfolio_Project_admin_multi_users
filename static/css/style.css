@@ -1,0 +1,23 @@
+.avatar {
+  width: 128px;
+  height: 128px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  background: #e9ecef;
+}
+
+.avatar-sm {
+  width: 64px;
+  height: 64px;
+  border-width: 2px;
+}
+
+.card-header h2 {
+  font-weight: 600;
+}
+
+.list-group-item p {
+  color: #495057;
+}

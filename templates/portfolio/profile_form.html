@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+{% block title %}Edit profile &middot; Portfolio Manager{% endblock %}
+
+{% block content %}
+{% if viewing_other %}
+  <div class="alert alert-warning">
+    You are editing <strong>{{ profile.user.username }}</strong>'s portfolio as an administrator.
+  </div>
+{% endif %}
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">Edit profile</h1>
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          {% if current_picture_url %}
+            <img src="{{ current_picture_url }}" class="avatar avatar-sm" alt="Current profile picture">
+          {% else %}
+            <img src="{% static 'img/avatar.svg' %}" class="avatar avatar-sm" alt="Default avatar">
+          {% endif %}
+          <div class="small text-muted">
+            {% if current_cv_label %}
+              Current file: <a href="{% url 'portfolio:cv_download' profile.pk %}">{{ current_cv_label }}</a><br>
+            {% else %}
+              No CV uploaded yet.<br>
+            {% endif %}
+            Pictures: JPG, PNG, GIF or WEBP up to {{ picture_max_mb }} MB.
+            CV: PDF, DOC or DOCX up to {{ cv_max_mb }} MB.
+          </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            <a class="btn btn-outline-secondary" href="{% url 'portfolio:profile_detail' profile.pk %}">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

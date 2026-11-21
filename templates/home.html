@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="py-5 text-center">
+  <h1 class="display-5 fw-bold">Build and manage your professional portfolio</h1>
+  <p class="lead text-muted col-lg-7 mx-auto">
+    Keep your profile, skills, projects, work experience, education and CV in one private place.
+    Only you (and site administrators) can see and change your portfolio.
+  </p>
+  <div class="d-flex justify-content-center gap-2 mt-4">
+    <a class="btn btn-primary btn-lg" href="{% url 'accounts:register' %}">Create an account</a>
+    <a class="btn btn-outline-secondary btn-lg" href="{% url 'accounts:login' %}">Log in</a>
+  </div>
+</div>
+
+<div class="row g-4 mt-2">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h2 class="h5">Your own space</h2>
+      <p class="mb-0 text-muted">Every user manages only their own portfolio. Other users cannot view or edit it.</p>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h2 class="h5">Everything in one profile</h2>
+      <p class="mb-0 text-muted">Add a profile picture, skills, projects, experience and education, and upload your CV.</p>
+    </div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm"><div class="card-body">
+      <h2 class="h5">Protected CV downloads</h2>
+      <p class="mb-0 text-muted">CV files are stored privately and can only be downloaded by their owner or an administrator.</p>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
